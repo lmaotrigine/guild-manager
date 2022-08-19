@@ -1,0 +1,53 @@
+name: lint
+
+on:
+  push:
+  pull_request:
+    types: [ opened, reopened, synchronize ]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [ '3.8', '3.x' ]
+    
+    name: check ${{ matrix.python-version }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: Set up CPython ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      
+      - name: Install dependencies
+        id: install-deps
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 - --preview
+          ln -s $HOME/.local/bin/poetry ./poetry
+          ./poetry config virtualenvs.create false
+          ./poetry install --no-root
+      
+      - name: Set up node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      
+      - name: Run Pyright
+        uses: jakebailey/pyright-action@v1
+        with:
+          version: '1.1.267'
+      
+      - name: Run black
+        if: ${{ always() && steps.install-deps.outcome == 'success' }}
+        run: |
+          black --check guild_manager
+      
+      - name: Run isort
+        if: ${{ always() && steps.install-deps.outcome == 'success' }}
+        run: |
+          isort -c guild_manager

@@ -1,0 +1,8 @@
+*.py[cod]
+*.log
+*.egg-info
+venv
+.venv
+*.buildinfo
+build/*
+/.coverage

@@ -1,0 +1,52 @@
+[tool.poetry]
+name = "guild-manager"
+version = "0.1.0"
+description = "A discord.py extension to easily manage a bot's guild count."
+authors = ["Varun J <root@5ht2.me>"]
+license = "MPL-2.0"
+readme = "README.md"
+repository = "https://github.com/lmaotrigine/guild-manager"
+packages = [{include = "guild_manager"}]
+include = ["LICENSE"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+"discord.py" = {git = "https://github.com/Rapptz/discord.py", branch = "master"}
+
+[tool.poetry.group.dev.dependencies]
+black = "^22.6.0"
+isort = "^5.10.1"
+
+[tool.black]
+line-length = 125
+target-version = ["py38"]
+skip-string-normalization = true
+
+[tool.isort]
+profile = "black"
+lines_after_imports = 2
+line_length = 125
+
+[tool.pyright]
+include = ["guild_manager"]
+useLibraryCodeForTypes = true
+typeCheckingMode = "basic"
+pythonVersion = "3.8"
+strictListInference = true
+strictDictionaryInference = true
+strictSetInference = true
+strictParameterNoneValue = true
+reportMissingImports = "error"
+reportUnusedImport = "error"
+reportUnusedClass = "error"
+reportUnusedFunction = "error"
+reportUnusedVariable = "error"
+reportGeneralTypeIssues = "error"
+reportFunctionMemberAccess = "error"
+reportDuplicateImport = "error"
+reportUntypedFunctionDecorator = "error"
+reportUnnecessaryTypeIgnoreComment = "warning"
+
+[build-system]
+requires = ["poetry-core>=1.1.0b2"]
+build-backend = "poetry.core.masonry.api"
